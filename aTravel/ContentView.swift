@@ -6,16 +6,44 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ContentView: View {
+    @ObservedObject var viewModel = ViewModel()
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            ZStack {
+                Map(coordinateRegion: $viewModel.mapRegion)
+                    .ignoresSafeArea()
+                
+                Circle()
+                    .fill(.mint)
+                    .opacity(0.4)
+                    .frame(width: 28, height: 28)
+                
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        
+                        Button() {
+                            
+                        } label: {
+                            Image(systemName: "plus")
+                                .padding()
+                                .background(.black.opacity(0.75))
+                                .foregroundColor(.white)
+                                .font(.title)
+                                .clipShape(Circle())
+                                .padding(.trailing)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("aTravel🗺")
         }
-        .padding()
     }
 }
 

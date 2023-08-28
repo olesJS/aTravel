@@ -11,6 +11,13 @@
 		AFD65BB82A9C905000B2F6A5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BB72A9C905000B2F6A5 /* ContentView.swift */; };
 		AFD65BBA2A9C905100B2F6A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD65BB92A9C905100B2F6A5 /* Assets.xcassets */; };
 		AFD65BBD2A9C905100B2F6A5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AFD65BBC2A9C905100B2F6A5 /* Preview Assets.xcassets */; };
+		AFD65BC42A9C918C00B2F6A5 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BC32A9C918C00B2F6A5 /* ViewModel.swift */; };
+		AFD65BCC2A9C92FA00B2F6A5 /* aTravel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BCA2A9C92FA00B2F6A5 /* aTravel.xcdatamodeld */; };
+		AFD65BD82A9C99B000B2F6A5 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BD72A9C99B000B2F6A5 /* DataController.swift */; };
+		AFD65BDD2A9CA0B300B2F6A5 /* Item+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BD92A9CA0B300B2F6A5 /* Item+CoreDataClass.swift */; };
+		AFD65BDE2A9CA0B300B2F6A5 /* Item+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BDA2A9CA0B300B2F6A5 /* Item+CoreDataProperties.swift */; };
+		AFD65BDF2A9CA0B300B2F6A5 /* CDImage+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BDB2A9CA0B300B2F6A5 /* CDImage+CoreDataClass.swift */; };
+		AFD65BE02A9CA0B300B2F6A5 /* CDImage+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD65BDC2A9CA0B300B2F6A5 /* CDImage+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +26,13 @@
 		AFD65BB72A9C905000B2F6A5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AFD65BB92A9C905100B2F6A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AFD65BBC2A9C905100B2F6A5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AFD65BC32A9C918C00B2F6A5 /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		AFD65BCB2A9C92FA00B2F6A5 /* aTravel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = aTravel.xcdatamodel; sourceTree = "<group>"; };
+		AFD65BD72A9C99B000B2F6A5 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		AFD65BD92A9CA0B300B2F6A5 /* Item+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AFD65BDA2A9CA0B300B2F6A5 /* Item+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		AFD65BDB2A9CA0B300B2F6A5 /* CDImage+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDImage+CoreDataClass.swift"; sourceTree = "<group>"; };
+		AFD65BDC2A9CA0B300B2F6A5 /* CDImage+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDImage+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +65,12 @@
 		AFD65BB42A9C905000B2F6A5 /* aTravel */ = {
 			isa = PBXGroup;
 			children = (
+				AFD65BD62A9C961000B2F6A5 /* Model */,
 				AFD65BB52A9C905000B2F6A5 /* aTravelApp.swift */,
 				AFD65BB72A9C905000B2F6A5 /* ContentView.swift */,
+				AFD65BC32A9C918C00B2F6A5 /* ViewModel.swift */,
+				AFD65BD72A9C99B000B2F6A5 /* DataController.swift */,
+				AFD65BCA2A9C92FA00B2F6A5 /* aTravel.xcdatamodeld */,
 				AFD65BB92A9C905100B2F6A5 /* Assets.xcassets */,
 				AFD65BBB2A9C905100B2F6A5 /* Preview Content */,
 			);
@@ -65,6 +83,17 @@
 				AFD65BBC2A9C905100B2F6A5 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AFD65BD62A9C961000B2F6A5 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				AFD65BD92A9CA0B300B2F6A5 /* Item+CoreDataClass.swift */,
+				AFD65BDA2A9CA0B300B2F6A5 /* Item+CoreDataProperties.swift */,
+				AFD65BDB2A9CA0B300B2F6A5 /* CDImage+CoreDataClass.swift */,
+				AFD65BDC2A9CA0B300B2F6A5 /* CDImage+CoreDataProperties.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +166,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFD65BDE2A9CA0B300B2F6A5 /* Item+CoreDataProperties.swift in Sources */,
+				AFD65BDD2A9CA0B300B2F6A5 /* Item+CoreDataClass.swift in Sources */,
+				AFD65BD82A9C99B000B2F6A5 /* DataController.swift in Sources */,
 				AFD65BB82A9C905000B2F6A5 /* ContentView.swift in Sources */,
+				AFD65BDF2A9CA0B300B2F6A5 /* CDImage+CoreDataClass.swift in Sources */,
+				AFD65BE02A9CA0B300B2F6A5 /* CDImage+CoreDataProperties.swift in Sources */,
+				AFD65BCC2A9C92FA00B2F6A5 /* aTravel.xcdatamodeld in Sources */,
+				AFD65BC42A9C918C00B2F6A5 /* ViewModel.swift in Sources */,
 				AFD65BB62A9C905000B2F6A5 /* aTravelApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +373,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		AFD65BCA2A9C92FA00B2F6A5 /* aTravel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				AFD65BCB2A9C92FA00B2F6A5 /* aTravel.xcdatamodel */,
+			);
+			currentVersion = AFD65BCB2A9C92FA00B2F6A5 /* aTravel.xcdatamodel */;
+			path = aTravel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = AFD65BAA2A9C905000B2F6A5 /* Project object */;
 }
