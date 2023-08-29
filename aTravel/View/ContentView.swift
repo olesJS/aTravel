@@ -15,13 +15,6 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.items) { item in
-//                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: item.location.latitude, longitude: item.location.longitude)) {
-//                        VStack {
-//                            Image(systemName: "mappin")
-//                                .foregroundColor(item.type == "Visited" ? Color.green : Color.red)
-//                                .font(.largeTitle)
-//                        }
-//                    }
                     MapMarker(coordinate: item.location.coordinate, tint: item.type == "Visited" ? .blue : .red)
                 }
                     .ignoresSafeArea()

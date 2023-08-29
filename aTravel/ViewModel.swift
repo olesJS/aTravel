@@ -33,7 +33,7 @@ import CoreData
     @Published var addName: String = ""
     @Published var addAbout: String = ""
     @Published var addDate: Date = Date.now
-    @Published var addType: String = "Planned"
+    @Published var addType: String = "Visited"
     
     // VisitedView
     let maximumRating = 5
@@ -45,6 +45,12 @@ import CoreData
         return false
     }
     
+    // PlannedView
+    @Published var places: [AddedPlace] = []
+    
+    @Published var newPlaceName: String = ""
+    @Published var isPlaceVisited = false
+    
     // ImagePicker
     @Published var isImagePickerActive = false
     @Published var uiImage: UIImage?
@@ -52,15 +58,18 @@ import CoreData
     @Published var uiImageArray: [UIImage] = [UIImage]()
     
     // Saving new visited place
-    func saveVisited() {
+    func saveToDocumentDirectory() {
+        // addding images
         var imgDataArray: [ImageData] = []
         for uiImg in uiImageArray {
             imgDataArray.append(ImageData(imgData: uiImg.jpegData(compressionQuality: 0.8) ?? Data()))
         }
         
-        let newItem = Item(name: addName, about: addAbout, type: addType, date: addDate, rating: addRating, location: Location(latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude), images: imgDataArray)
+        // creating a new example of Item
+        let newItem = Item(name: addName, about: addAbout, type: addType, date: addDate, rating: addRating, location: Location(latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude), images: imgDataArray, addedPlaces: places)
         items.append(newItem)
         
+        // writing data to Documents Directory
         do {
             let data = try JSONEncoder().encode(items)
             try data.write(to: savePath, options: [.atomic, .completeFileProtection])
@@ -76,5 +85,6 @@ import CoreData
         addType = "Planned"
         addRating = 3
         uiImageArray = [UIImage]()
+        places = []
     }
 }

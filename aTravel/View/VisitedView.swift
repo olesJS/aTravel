@@ -60,9 +60,12 @@ struct VisitedView: View {
                     }
                 }
                 
+                Divider()
+                    .padding(.horizontal)
+                
                 VStack(alignment: .center) {
                     Button() {
-                        viewModel.saveVisited()
+                        viewModel.saveToDocumentDirectory()
                         dismiss()
                         viewModel.cleanFields()
                     } label: {

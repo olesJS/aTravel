@@ -17,4 +17,5 @@ struct Item: Codable, Identifiable {
     var rating: Int
     let location: Location
     var images: [ImageData]
+    var addedPlaces: [AddedPlace]
 }
