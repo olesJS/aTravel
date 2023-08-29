@@ -21,6 +21,7 @@ struct AddView: View {
                 
                 Button("Cancel") {
                     dismiss()
+                    viewModel.cleanFields()
                 }
             }
             .padding()
@@ -49,8 +50,8 @@ struct AddView: View {
                         PlannedView()
                             .environmentObject(viewModel)
                     } else {
-                        VisitedView(viewModel: viewModel)
-                           
+                        VisitedView()
+                            .environmentObject(viewModel)
                     }
                 }
             }

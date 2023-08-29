@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct VisitedView: View {
-    @StateObject var viewModel: ViewModel
-    @Environment(\.managedObjectContext) var moc
+    @EnvironmentObject var viewModel: ViewModel
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         Section {
@@ -63,6 +63,8 @@ struct VisitedView: View {
                 VStack(alignment: .center) {
                     Button() {
                         viewModel.saveVisited()
+                        dismiss()
+                        viewModel.cleanFields()
                     } label: {
                         HStack {
                             Image(systemName: "square.and.arrow.down")

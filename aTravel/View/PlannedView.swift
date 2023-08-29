@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PlannedView: View {
     @EnvironmentObject var viewModel: ViewModel
-    @Environment(\.managedObjectContext) var moc
     
     var body: some View {
         Section {

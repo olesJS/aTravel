@@ -11,18 +11,23 @@ import MapKit
 import CoreData
 
 @MainActor class ViewModel: ObservableObject {
-    @FetchRequest(sortDescriptors: []) var items: FetchedResults<Item>
-    let moc: NSManagedObjectContext
-        
-    init(moc: NSManagedObjectContext) {
-        self.moc = moc
-    }
+    @Published var items: [Item]
+    let savePath = FileManager.documentDirectory.appendingPathExtension("Items")
     
     @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 50, longitude: 0), span: MKCoordinateSpan(latitudeDelta: 25, longitudeDelta: 25))
     
     @Published var isAddSheetActive = false
     
     let tripTypes = ["Visited", "Planned"]
+    
+    init() {
+        do {
+            let data = try Data(contentsOf: savePath)
+            items = try JSONDecoder().decode([Item].self, from: data)
+        } catch {
+            items = []
+        }
+    }
     
     // AddView
     @Published var addName: String = ""
@@ -46,36 +51,30 @@ import CoreData
     
     @Published var uiImageArray: [UIImage] = [UIImage]()
     
+    // Saving new visited place
     func saveVisited() {
-        do {
-            let newPlace = Item(context: moc)
-            newPlace.id = UUID()
-            newPlace.name = addName
-            newPlace.about = addAbout
-            newPlace.date = addDate
-            newPlace.rating = Int16(addRating)
-            newPlace.type = addType
-            newPlace.latitude = mapRegion.center.latitude
-            newPlace.longitude = mapRegion.center.longitude
-            
-            var cdImages = [CDImage]()
-            
-            for img in uiImageArray {
-                let newCDImg = CDImage(context: moc)
-                newCDImg.name = addName
-                newCDImg.id = newPlace.id
-                newCDImg.img = img.jpegData(compressionQuality: 0.8)
-                cdImages.append(newCDImg)
-            }
-            
-            newPlace.addToImage(NSSet(array: cdImages))
-            try moc.save()
-            print("moc saved visited")
-            for i in items {
-                print(i.name ?? "ae")
-            }
-        } catch {
-            print("failed save")
+        var imgDataArray: [ImageData] = []
+        for uiImg in uiImageArray {
+            imgDataArray.append(ImageData(imgData: uiImg.jpegData(compressionQuality: 0.8) ?? Data()))
         }
+        
+        let newItem = Item(name: addName, about: addAbout, type: addType, date: addDate, rating: addRating, location: Location(latitude: mapRegion.center.latitude, longitude: mapRegion.center.longitude), images: imgDataArray)
+        items.append(newItem)
+        
+        do {
+            let data = try JSONEncoder().encode(items)
+            try data.write(to: savePath, options: [.atomic, .completeFileProtection])
+        } catch {
+            print("ERROR: SAVE VISITED")
+        }
+    }
+    
+    func cleanFields() {
+        addName = ""
+        addAbout = ""
+        addDate = Date.now
+        addType = "Planned"
+        addRating = 3
+        uiImageArray = [UIImage]()
     }
 }

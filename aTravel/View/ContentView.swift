@@ -9,23 +9,20 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var moc
-    @StateObject var viewModel: ViewModel
-    
-    init() {
-        _viewModel = StateObject(wrappedValue: ViewModel(moc: moc))
-    }
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         NavigationView {
             ZStack {
                 Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.items) { item in
-                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)) {
-                        VStack {
-                            Image(systemName: "mappin")
-                                .foregroundColor(item.type == "Visited" ? Color.green : Color.red)
-                        }
-                    }
+//                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: item.location.latitude, longitude: item.location.longitude)) {
+//                        VStack {
+//                            Image(systemName: "mappin")
+//                                .foregroundColor(item.type == "Visited" ? Color.green : Color.red)
+//                                .font(.largeTitle)
+//                        }
+//                    }
+                    MapMarker(coordinate: item.location.coordinate, tint: item.type == "Visited" ? .blue : .red)
                 }
                     .ignoresSafeArea()
                 
