@@ -9,12 +9,24 @@ import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @ObservedObject var viewModel = ViewModel()
+    @Environment(\.managedObjectContext) var moc
+    @StateObject var viewModel: ViewModel
+    
+    init() {
+        _viewModel = StateObject(wrappedValue: ViewModel(moc: moc))
+    }
     
     var body: some View {
         NavigationView {
             ZStack {
-                Map(coordinateRegion: $viewModel.mapRegion)
+                Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.items) { item in
+                    MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)) {
+                        VStack {
+                            Image(systemName: "mappin")
+                                .foregroundColor(item.type == "Visited" ? Color.green : Color.red)
+                        }
+                    }
+                }
                     .ignoresSafeArea()
                 
                 Circle()
@@ -28,8 +40,8 @@ struct ContentView: View {
                     HStack {
                         Spacer()
                         
-                        Button() {
-                            
+                        Button {
+                            viewModel.isAddSheetActive = true
                         } label: {
                             Image(systemName: "plus")
                                 .padding()
@@ -39,10 +51,14 @@ struct ContentView: View {
                                 .clipShape(Circle())
                                 .padding(.trailing)
                         }
+                        .sheet(isPresented: $viewModel.isAddSheetActive) {
+                            AddView()
+                                .environmentObject(viewModel)
+                        }
                     }
                 }
             }
-            .navigationTitle("aTravel🗺")
+            .navigationTitle("aTravel📍")
         }
     }
 }
