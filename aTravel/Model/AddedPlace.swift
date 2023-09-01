@@ -7,9 +7,13 @@
 
 import Foundation
 
-struct AddedPlace: Codable, Identifiable {
+struct AddedPlace: Codable, Identifiable, Equatable {
     var name: String
     var isVisited: Bool = false
     
     var id = UUID()
+    
+    static func == (lhs: AddedPlace, rhs: AddedPlace) -> Bool {
+        lhs.id == rhs.id
+    }
 }

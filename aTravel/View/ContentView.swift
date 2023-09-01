@@ -15,7 +15,24 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 Map(coordinateRegion: $viewModel.mapRegion, annotationItems: viewModel.items) { item in
-                    MapMarker(coordinate: item.location.coordinate, tint: item.type == "Visited" ? .blue : .red)
+                    //MapMarker(coordinate: item.location.coordinate, tint: item.type == "Visited" ? .blue : .red)
+                    
+                    MapAnnotation(coordinate: item.location.coordinate) {
+                        NavigationLink {
+                            InfoView(item: item)
+                                .environmentObject(viewModel)
+                        } label: {
+                            VStack {
+                                Image(systemName: "mappin.and.ellipse")
+                                    .font(.title2)
+                                    .foregroundColor(item.type == "Visited" ? Color.blue : Color.red)
+                                
+                                Text(item.name)
+                                    .font(.caption)
+                                    .foregroundColor(item.type == "Visited" ? Color.blue : Color.red)
+                            }
+                        }
+                    }
                 }
                     .ignoresSafeArea()
                 

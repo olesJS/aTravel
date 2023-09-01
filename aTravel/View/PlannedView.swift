@@ -14,29 +14,35 @@ struct PlannedView: View {
     var body: some View {
         Section {
             VStack {
-                // To-Do list
-                // Add places to Item struct
+                // Check-List
                 VStack {
                     Text("Add places you'd like to visit:")
                         .bold()
                     
+                    // added places
                     List {
                         ForEach(viewModel.places) { place in
-                            Text(place.name)
-                                .font(.title3)
-                                .padding(5)
+                            HStack {
+                                Text(place.name)
+                                    .font(.title3)
+                                    .padding(5)
+                                
+                                Spacer()
+                            }
                             
                             Divider()
                                 .padding(.horizontal)
                         }
                     }
                     
+                    // form for adding a new place
                     HStack {
                         TextField("Place name", text: $viewModel.newPlaceName)
                         
                         Button() {
                             viewModel.places.append(AddedPlace(name: viewModel.newPlaceName))
                             viewModel.newPlaceName = ""
+                            print(viewModel.places)
                         } label: {
                             Image(systemName: "plus.circle.fill")
                                 .font(.title)
@@ -47,6 +53,54 @@ struct PlannedView: View {
                 
                 Divider()
                     .padding(.horizontal)
+                
+                Section {
+                    Text("Places nearby:")
+                        .padding(.bottom)
+                        .bold()
+                    
+                    switch viewModel.loadingState {
+                    case .loading:
+                        VStack {
+                            ProgressView()
+                            Text("Loading...")
+                        }
+                        
+                    case .failed:
+                        Text("Please, try again later!")
+                        
+                    case .loaded:
+                        VStack(alignment: .leading) {
+                            ForEach(viewModel.pages, id: \.pageid) { page in
+                                HStack {
+                                    Text(page.title)
+                                        .bold()
+                                    + Text(": ")
+                                    + Text(page.description)
+                                        .italic()
+                                    
+//                                    Button() {
+//                                        viewModel.places.append(AddedPlace(name: page.title))
+//                                        viewModel.newPlaceName = ""
+//                                        print(viewModel.places)
+//                                    } label: {
+//                                        Image(systemName: "plus.circle.fill")
+//                                            .font(.title)
+//                                    }
+                                }
+                                .onTapGesture {
+                                    viewModel.places.append(AddedPlace(name: page.title))
+                                    viewModel.newPlaceName = ""
+                                    print(viewModel.places)
+                                }
+                                
+                                Divider()
+                                    .padding(.horizontal)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                    }
+                }
                 
                 // save button
                 VStack(alignment: .center) {
@@ -64,6 +118,9 @@ struct PlannedView: View {
                     .disabled(viewModel.isSaveButtonDisabled)
                 }
             }
+        }
+        .task {
+            await viewModel.fetchNearbyPlaces(latitude: viewModel.mapRegion.center.latitude, longitude: viewModel.mapRegion.center.longitude)
         }
     }
 }

@@ -6,7 +6,13 @@
 //
 
 import Foundation
+import UIKit
 
-struct ImageData: Codable {
+struct ImageData: Codable, Identifiable {
     let imgData: Data
+    var id = UUID()
+    
+    var uiImage: UIImage {
+        UIImage(data: imgData) ?? UIImage()
+    }
 }

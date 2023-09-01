@@ -9,8 +9,14 @@ import Foundation
 import SwiftUI
 import MapKit
 import CoreData
+import CoreLocation
 
-@MainActor class ViewModel: ObservableObject {
+enum LoadingStates {
+    case loading, loaded, failed
+}
+
+@MainActor
+class ViewModel: ObservableObject {
     @Published var items: [Item]
     let savePath = FileManager.documentDirectory.appendingPathExtension("Items")
     
@@ -28,6 +34,8 @@ import CoreData
             items = []
         }
     }
+    
+    // InfoView
     
     // AddView
     @Published var addName: String = ""
@@ -50,6 +58,9 @@ import CoreData
     
     @Published var newPlaceName: String = ""
     @Published var isPlaceVisited = false
+    
+    @Published var loadingState: LoadingStates = .loading
+    @Published var pages = [Page]()
     
     // ImagePicker
     @Published var isImagePickerActive = false
@@ -86,5 +97,53 @@ import CoreData
         addRating = 3
         uiImageArray = [UIImage]()
         places = []
+    }
+    
+    // deleting rows from check-list in PlannedView
+    func removePlaceRows(at offsets: IndexSet) {
+        places.remove(atOffsets: offsets)
+    }
+    
+    // get the country of place
+    func reverseGeocoding(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> String {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        var countryName = ""
+        
+        geocoder.reverseGeocodeLocation(location, completionHandler: {(placemarks, error) -> Void in
+            if error != nil {
+                print("Failed to retrieve address")
+                return
+            }
+            
+            if let placemarks = placemarks, let placemark = placemarks.first {
+                countryName = placemark.country ?? "no country"
+                print(placemark.country!)
+                print("Country: \(placemark.country!)")
+            } else {
+                countryName = "No matching address"
+            }
+        })
+        
+        return countryName
+    }
+    
+    // fetch places from Wikipedia
+    func fetchNearbyPlaces(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async {
+        let urlString = "https://en.wikipedia.org/w/api.php?ggscoord=\(latitude)%7C\(longitude)&action=query&prop=coordinates%7Cpageimages%7Cpageterms&colimit=50&piprop=thumbnail&pithumbsize=500&pilimit=50&wbptterms=description&generator=geosearch&ggsradius=10000&ggslimit=50&format=json"
+        
+        guard let url = URL(string: urlString) else {
+            print("Bad URL")
+            return
+        }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            let items = try JSONDecoder().decode(Result.self, from: data)
+            pages = items.query.pages.values.sorted()
+            loadingState = .loaded
+        } catch {
+            loadingState = .failed
+        }
     }
 }
